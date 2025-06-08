@@ -3,44 +3,34 @@ from django.db import models
 
 
 class User(AbstractUser):
-    """Модель для пользователей foodgram"""
+    """Модель для пользователей созданная для приложения foodgram"""
 
     email = models.EmailField(
-        max_length=254,
-        unique=True,
-        blank=False,
-        db_index=True,
-        verbose_name='Email',
-        help_text='Введите email'
+        verbose_name='Электронная почта',
+        unique=True
     )
-
     username = models.CharField(
-        max_length=254,
+        max_length=150,
+        verbose_name='Имя пользователя',
         unique=True,
-        blank=False,
-        verbose_name='Логин',
-        help_text='Введите ваш логин'
+        db_index=True
+    )
+    first_name = models.CharField(
+        max_length=150,
+        verbose_name='Имя'
+    )
+    last_name = models.CharField(
+        max_length=150,
+        verbose_name='Фамилия'
     )
 
-    password = models.CharField(
-        max_length=100,
-        blank=False,
-        verbose_name='Пароль',
-        help_text='Введите пароль'
-    )
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
-    first_name = models.TextField(
-        verbose_name='Имя',
-        blank=False,
-        null=False,
-        help_text='Введите имя'
-    )
-    second_name = models.TextField(
-        verbose_name='Фамилия',
-        blank=False,
-        null=False,
-        help_text='Введите фамилию'
-    )
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+        ordering = ('id',)
 
     def __str__(self):
         return self.username
