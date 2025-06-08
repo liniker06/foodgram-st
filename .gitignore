@@ -138,5 +138,11 @@ dmypy.json
 .idea
 .vscode
 
+.DS_Store
+backend/.DS_Store
+frontend/.DS_Store
+
 static/
 media/
+
+.node_modules
