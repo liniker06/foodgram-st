@@ -1,9 +1,9 @@
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '4#!yype9r5-5c)%yv9k7s^^1++q7v$hdm1o%csxc=kh0auhj8n'
+
 
 DEBUG = True
 
@@ -126,6 +126,21 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+
+    'PAGE_SIZE': 6,
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DJOSER = {
+    'PERMISSIONS': {
+        'user_list': ['rest_framework.permissions.AllowAny'],
+        'user': ['rest_framework.permissions.IsAuthenticated'],
+    },
+
+    'SERIALIZERS': {
+        'user': 'api.serializer.CustomUserSerializer',
+        'user_create': 'api.serializer.CustomCreateUserSerializer',
+        'current_user': 'api.serializer.CustomUserSerializer',
+    }
+}
