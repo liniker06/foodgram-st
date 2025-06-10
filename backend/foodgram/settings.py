@@ -31,14 +31,11 @@ INSTALLED_APPS = [
     'django_filters',
 ]
 
-INTERNAL_IPS = [
-    'localhost', '127.0.0.1'
-]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -71,7 +68,7 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
+        'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': os.getenv('DB_HOST'),
@@ -136,6 +133,7 @@ REST_FRAMEWORK = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': False,
@@ -152,6 +150,4 @@ DJOSER = {
     },
 }
 
-
-BACKEND_DIR = os.path.join(BASE_DIR, 'backend')
-CSV_FILES_DIR = os.path.join(BACKEND_DIR, 'data')
+CSV_FILES_DIR = os.path.join(BASE_DIR, 'data')

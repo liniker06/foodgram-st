@@ -8,15 +8,15 @@ from .models import (
 
 @register(Ingredient)
 class IngredientAdmin(ModelAdmin):
-    llist_display = (
-        'pk', 'name', 'author', 'get_favorites', 'get_tags', 'created'
-    )
+    list_display = ('pk', 'name', 'measurement_unit')
     search_fields = ('name',)
 
 
 @register(Recipe)
 class RecipeAdmin(ModelAdmin):
-    list_display = ('pk', 'name', 'author', 'created')
+    list_display = (
+        'pk', 'name', 'author', 'get_favorites', 'get_tags', 'created'
+    )
     list_filter = ('author', 'name', 'tags')
     search_fields = ('name',)
 
@@ -35,7 +35,7 @@ class RecipeAdmin(ModelAdmin):
 
 @register(Tag)
 class TagAdmin(ModelAdmin):
-    list_display = ('pk', 'name', 'slug')
+    list_display = ('pk', 'name', 'color', 'slug')
 
 
 @register(IngredientInRecipe)
