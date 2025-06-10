@@ -2,10 +2,12 @@ FROM python:3.12
 
 WORKDIR /app
 
-COPY requirements.txt .
+RUN pip install gunicorn==20.1.0
+
+COPY requirements.txt ./
 
 RUN pip install -r requirements.txt --no-cache-dir
 
-COPY . .
+COPY ./ ./
 
-CMD ["sh", "entrypoint.sh"]
+CMD ["gunicorn", "foodgram.wsgi:application", "--bind", "0:8000" ]

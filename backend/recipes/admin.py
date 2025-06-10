@@ -2,13 +2,15 @@ from django.contrib.admin import ModelAdmin, register
 
 from .models import (
     Ingredient, IngredientInRecipe, Recipe,
-    Tag, ShoppingCart, Follow, Favorite
+    Tag, ShoppingCart, Follow, Favorite, TagInRecipe
 )
 
 
 @register(Ingredient)
 class IngredientAdmin(ModelAdmin):
-    list_display = ('pk', 'name', 'measurement_unit')
+    llist_display = (
+        'pk', 'name', 'author', 'get_favorites', 'get_tags', 'created'
+    )
     search_fields = ('name',)
 
 
@@ -17,6 +19,18 @@ class RecipeAdmin(ModelAdmin):
     list_display = ('pk', 'name', 'author', 'created')
     list_filter = ('author', 'name', 'tags')
     search_fields = ('name',)
+
+    def get_favorites(self, obj):
+        return obj.favorites.count()
+
+    get_favorites.short_description = (
+        'Количество добавлений рецепта в избранное'
+    )
+
+    def get_tags(self, obj):
+        return '\n'.join(obj.tags.values_list('name', flat=True))
+
+    get_tags.short_description = 'Тег или список тегов'
 
 
 @register(Tag)
@@ -44,3 +58,8 @@ class FollowAdmin(ModelAdmin):
 @register(Favorite)
 class FavoriteAdmin(ModelAdmin):
     list_display = ('pk', 'user', 'recipe')
+
+
+@register(TagInRecipe)
+class TagAdmin(ModelAdmin):
+    list_display = ('pk', 'tag', 'recipe')
