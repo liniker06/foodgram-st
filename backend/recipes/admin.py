@@ -59,7 +59,3 @@ class FollowAdmin(ModelAdmin):
 class FavoriteAdmin(ModelAdmin):
     list_display = ('pk', 'user', 'recipe')
 
-
-@register(TagInRecipe)
-class TagAdmin(ModelAdmin):
-    list_display = ('pk', 'tag', 'recipe')
