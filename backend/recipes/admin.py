@@ -2,7 +2,7 @@ from django.contrib.admin import ModelAdmin, register
 
 from .models import (
     Ingredient, IngredientInRecipe, Recipe,
-    Tag, ShoppingCart, Follow, Favorite, TagInRecipe
+    Tag, ShoppingCart, Follow, Favorite
 )
 
 
