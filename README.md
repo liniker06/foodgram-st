@@ -1,28 +1,4 @@
-Запуск проекта через Docker
+Находясь в папке infra, выполните команду docker-compose up. При выполнении этой команды контейнер frontend, описанный в docker-compose.yml, подготовит файлы, необходимые для работы фронтенд-приложения, а затем прекратит свою работу.
 
-1. Установите Docker
+По адресу http://localhost изучите фронтенд веб-приложения, а по адресу http://localhost/api/docs/ — спецификацию API.
 
-2. Клонируйте репозиторий: https://github.com/liniker06/foodgram-st.git
-
-3. Выполните команды в терминале:
-```
-cd ../infra
-docker-compose up -d --build
-```
-4. Выполните миграции
-```
-docker-compose exec backend python manage.py migrate
-```
-5. Создание суперпользователя
-```
-docker-compose exec backend python manage.py createsuperuser
-```
-6. Загрузка статических файлов:
-```
-docker-compose exec backend python manage.py collectstatic --no-input
-```
-7. Заполнение тестовыми данными:
-```
-docker-compose exec backend python manage.py add_tags_from_data
-docker-compose exec backend python manage.py add_ingidients_from_data   
-```
