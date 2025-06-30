@@ -11,9 +11,9 @@ services:
       - "5432:5432"
 
   backend:
-#    build:
-#      context: ../backend
-#      dockerfile: Dockerfile
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
     image: allay6/backend
     restart: always
     volumes:
