@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: foodgram
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25.4-alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: media-files
+              mountPath: /var/html/media
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      volumes:
+        - name: media-files
+          persistentVolumeClaim:
+            claimName: media-pvc
+        - name: nginx-config
+          configMap:
+            name: nginx-config
