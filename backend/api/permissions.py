@@ -1,18 +1,13 @@
-from django.contrib.auth import get_user_model
-from rest_framework import permissions
-
-User = get_user_model()
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-class IsAuthorOrReadOnly(permissions.BasePermission):
-    """Разрешение только для автора или только на чтение."""
-
+class IsAuthorOrReadOnly(BasePermission):
     def has_permission(self, request, view):
-        return (request.method in permissions.SAFE_METHODS
-                or request.user.is_authenticated)
+        if request.method in SAFE_METHODS:
+            return True
+        return request.user and request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        return (
-            request.method in permissions.SAFE_METHODS
-            or obj.author == request.user
-        )
+        if request.method in SAFE_METHODS:
+            return True
+        return obj.author == request.user
