@@ -1,6 +1,6 @@
 import { Card, Title, Pagination, CardList, Container, Main, CheckboxGroup  } from '../../components'
 import styles from './styles.module.css'
-import { useRecipes } from '../../utils/index.js'
+import { useRecipes } from '../../utils'
 import { useEffect } from 'react'
 import api from '../../api'
 import MetaTags from 'react-meta-tags'
@@ -13,17 +13,13 @@ const HomePage = ({ updateOrders }) => {
     setRecipesCount,
     recipesPage,
     setRecipesPage,
-    tagsValue,
-    setTagsValue,
-    handleTagsChange,
     handleLike,
     handleAddToCart
   } = useRecipes()
 
-
-  const getRecipes = ({ page = 1, tags }) => {
+  const getRecipes = ({ page = 1 }) => {
     api
-      .getRecipes({ page, tags })
+      .getRecipes({ page })
       .then(res => {
         const { results, count } = res
         setRecipes(results)
@@ -32,35 +28,21 @@ const HomePage = ({ updateOrders }) => {
   }
 
   useEffect(_ => {
-    getRecipes({ page: recipesPage, tags: tagsValue })
-  }, [recipesPage, tagsValue])
-
-  useEffect(_ => {
-    api.getTags()
-      .then(tags => {
-        setTagsValue(tags.map(tag => ({ ...tag, value: true })))
-      })
-  }, [])
+    getRecipes({ page: recipesPage })
+  }, [recipesPage])
 
 
   return <Main>
     <Container>
       <MetaTags>
         <title>Рецепты</title>
-        <meta name="description" content="Продуктовый помощник - Рецепты" />
+        <meta name="description" content="Фудграм - Рецепты" />
         <meta property="og:title" content="Рецепты" />
       </MetaTags>
       <div className={styles.title}>
         <Title title='Рецепты' />
-        <CheckboxGroup
-          values={tagsValue}
-          handleChange={value => {
-            setRecipesPage(1)
-            handleTagsChange(value)
-          }}
-        />
       </div>
-      <CardList>
+      {recipes.length > 0 && <CardList>
         {recipes.map(card => <Card
           {...card}
           key={card.id}
@@ -68,7 +50,7 @@ const HomePage = ({ updateOrders }) => {
           handleLike={handleLike}
           handleAddToCart={handleAddToCart}
         />)}
-      </CardList>
+      </CardList>}
       <Pagination
         count={recipesCount}
         limit={6}

@@ -1,11 +1,21 @@
-FROM python:3.9-slim
+FROM python:3.10
+
+# Устанавливаем netcat для проверки DB
+RUN apt-get update && \
+    apt-get install -y netcat-openbsd && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY requirements.txt ./
+# Сначала requirements
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip3 install -r requirements.txt --no-cache-dir
+# Отдельно устанавливаем gunicorn
+RUN pip install gunicorn==20.1.0
 
-COPY ./ ./
+# Копируем проект
+COPY . .
 
-CMD ["gunicorn", "foodgram.wsgi:application", "--bind", "0:8000" ]
+# Команда запуска
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "foodgram.wsgi:application"]
