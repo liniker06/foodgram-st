@@ -16,10 +16,10 @@ backend:
     DB_HOST: "postgres"
     DB_PORT: "5432"
   secrets:
-    name: db-secret
-    username: ref+vault://secrets/db#/POSTGRES_USER
-    password: ref+vault://secrets/db#/POSTGRES_PASSWORD
-    database: ref+vault://secrets/db#/POSTGRES_DB
+    name: postgres-secret
+    db: POSTGRES_DB
+    user: POSTGRES_USER
+    password: POSTGRES_PASSWORD
 
 job:
   enabled: true
@@ -47,11 +47,6 @@ postgres:
   servicePort: 5432
   secretsName: postgres-secret
   configMapName: postgres-config
-  secret:
-    name: db-secret
-    username: ref+vault://secrets/db#/POSTGRES_USER
-    password: ref+vault://secrets/db#/POSTGRES_PASSWORD
-    database: ref+vault://secrets/db#/POSTGRES_DB
 
 nginx:
   image: nginx:1.25.4-alpine
