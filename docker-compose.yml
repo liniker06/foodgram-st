@@ -57,7 +57,7 @@ services:
     image: nginx:alpine
     restart: always
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
       - ./frontend/build:/usr/share/nginx/html
       - ./backend/media:/var/html/media

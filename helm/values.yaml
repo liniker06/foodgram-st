@@ -7,7 +7,7 @@ backend:
   replicas: 2
   containerPort: 8000
   servicePort: 8000
-  targetPort: 8080
+  targetPort: 8081
   mediaStorage: 2Gi
   env:
     DEBUG: "False"
