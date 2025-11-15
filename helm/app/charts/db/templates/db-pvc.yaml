@@ -1,0 +1,19 @@
+{{- if not .Values.persistence.existingClaim }}
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+  name: {{ include "db.fullname" . }}-pvc
+  labels:
+    app.kubernetes.io/name: {{ include "db.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  spec:
+  accessModes:
+    - {{ .Values.storage.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.storage.size }}
+  {{- if .Values.storageClass }}
+  storageClassName: {{ .Values.storage.storageClass }}
+  {{- end }}
+{{- end }}

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nginx.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "nginx.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.nginx.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "nginx.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "nginx.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: nginx
+          image: "{{ .Values.nginx.image }}"
+          imagePullPolicy: {{ .Values.nginx.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - containerPort: {{ .Values.nginx.port | default 80 }}
+          volumeMounts:
+            - name: media-files
+              mountPath: {{ .Values.nginx.mediaPath | default "/var/html/media" }}
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      volumes:
+        - name: media-files
+          persistentVolumeClaim:
+            claimName: {{ .Values.nginx.mediaPVC }}
+        - name: nginx-config
+          configMap:
+            name: {{ include "nginx.fullname" . }}-config

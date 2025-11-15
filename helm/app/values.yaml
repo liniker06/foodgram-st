@@ -1,0 +1,78 @@
+namespace: foodgram
+createNamespace: false
+service:
+  port: 80
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: foodgram.localhost.ru
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: nginx-service   
+              port: 
+                number: 80
+        - path: /api
+          pathType: Prefix
+          backend:
+            service:
+              name: backend-service  
+              port:
+                number: 8000
+  tls:
+    - hosts:                         
+        - foodgram.localhost.ru
+      secretName: foodgram-tls
+
+backend:
+  namespace: foodgram
+  replicas: 2
+  image:
+    repository: allay6/backend
+    tag: latest
+  port: 8000
+  secrets:
+    name: db-secret
+    username: ref+vault://secret/data/foodgram/db#DB_USER
+    password: ref+vault://secret/data/foodgram/db#DB_PASSWORD
+    database: ref+vault://secret/data/foodgram/db#DB_NAME
+  env:
+    DJANGO_SETTINGS_MODULE: foodgram.settings   
+    DB_HOST: postgres
+    DB_PORT: "5432" 
+    DB_NAME: foodgram
+    DB_USER: foodgram
+    DB_PASSWORD: allay6
+    DB_ENGINE: django.db.backends.postgresql
+
+postgres:
+  namespace: foodgram
+  replicaCount: 1
+  serviceName: postgres 
+  image:
+    repository: postgres
+    tag: "17"
+  storage:
+    size: 5Gi
+    storageClass: yc-network-hdd
+    accessMode: ReadWriteOnce
+  secrets:
+    name: db-secret
+    username: ref+vault://secret/data/foodgram/db#DB_USER
+    password: ref+vault://secret/data/foodgram/db#DB_PASSWORD
+    database: ref+vault://secret/data/foodgram/db#DB_NAME
+
+nginx:
+  namespace: foodgram
+  replicas: 2
+  image: "nginx:1.25.4-alpine"
+  mediaPVC: "media-pvc"
+  configMap: "foodgram-nginx-config"
+  service:
+    port: 80

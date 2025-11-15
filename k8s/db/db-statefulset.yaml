@@ -22,15 +22,15 @@ spec:
               name: postgres
           envFrom:
             - secretRef:
-                name: postgres-secret
+                name: db-secret
             - configMapRef:
                 name: backend-config
           volumeMounts:
-            - name: postgres-storage
+            - name: db-storage
               mountPath: /var/lib/postgresql/data
   volumeClaimTemplates:
     - metadata:
-        name: postgres-storage
+        name: db-storage
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
