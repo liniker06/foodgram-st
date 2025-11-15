@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: postgres
+  tag: "17"
+  pullPolicy: IfNotPresent
+
+service:
+  name: postgres
+  port: 5432
+
+storage:
+  size: 5Gi
+  storageClass: standard
+  accessMode: ReadWriteOnce
+
+env:
+  DB_NAME: foodgram
+  DB_USER: allay6
+
+secrets:
+  name: db-secret
+  username: ref+vault://secret/data/foodgram/db#DB_USER
+  password: ref+vault://secret/data/foodgram/db#DB_PASSWORD
+  database: ref+vault://secret/data/foodgram/db#DB_NAME
+
+persistence:
+  existingClaim: media-pvc

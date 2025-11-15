@@ -1,0 +1,29 @@
+replicaCount: 2
+
+global:
+  image:
+    repository: allay6/backend
+    tag: latest
+    pullPolicy: IfNotPresent
+
+service:
+  name: backend
+  port: 8000
+  targetPort: 8081
+  mediaStorage: 2Gi
+  storageClass: standard
+  enabled: true
+
+  env:
+    DEBUG: "False"
+    ALLOWED_HOSTS: "130.193.52.254,localhost,nginx-service"
+    DB_ENGINE: "django.db.backends.postgresql"
+    DB_HOST: postgres
+    DB_PORT: "5432"
+
+dbSecretName: db-secret
+
+postgres:
+  serviceName: "postgres"
+  host: "postgres"
+  port: "5432"

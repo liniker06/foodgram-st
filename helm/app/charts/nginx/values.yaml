@@ -1,0 +1,13 @@
+namespace: foodgram
+nginx:
+  service:
+    port: 80
+    name: nginx-service
+    type: ClusterIP
+  replicas: 2
+  image: "nginx:1.25.4-alpine"
+  pullPolicy: IfNotPresent
+  port: 80
+  mediaPath: "/var/html/media"
+  mediaPVC: "media-pvc"
+  configMap: "nginx-config"
