@@ -39,16 +39,16 @@ backend:
   port: 8000
   secrets:
     name: db-secret
-    username: ref+vault://secret/data/foodgram/db#DB_USER
-    password: ref+vault://secret/data/foodgram/db#DB_PASSWORD
-    database: ref+vault://secret/data/foodgram/db#DB_NAME
+    username: ref+vault://secrets/foodgram/db#DB_USER
+    password: ref+vault://secrets/foodgram/db#DB_PASSWORD
+    database: ref+vault://secrets/foodgram/db#DB_NAME
   env:
     DJANGO_SETTINGS_MODULE: foodgram.settings   
     DB_HOST: postgres
-    DB_PORT: "5432" 
-    DB_NAME: foodgram
-    DB_USER: foodgram
-    DB_PASSWORD: allay6
+    DB_PORT: "5432"
+    DB_NAME: ""
+    DB_USER: ""
+    DB_PASSWORD: ""
     DB_ENGINE: django.db.backends.postgresql
 
 postgres:
@@ -63,16 +63,16 @@ postgres:
     storageClass: yc-network-hdd
     accessMode: ReadWriteOnce
   secrets:
-    name: db-secret
-    username: ref+vault://secret/data/foodgram/db#DB_USER
-    password: ref+vault://secret/data/foodgram/db#DB_PASSWORD
-    database: ref+vault://secret/data/foodgram/db#DB_NAME
+    name: postgres-secret
+    username: ref+vault://secrets/foodgram/db#DB_USER
+    password: ref+vault://secrets/foodgram/db#DB_PASSWORD
+    database: ref+vault://secrets/foodgram/db#DB_NAME
 
 nginx:
   namespace: foodgram
   replicas: 2
   image: "nginx:1.25.4-alpine"
-  mediaPVC: "media-pvc"
+  mediaPVC: media-pvc-nginx
   configMap: "foodgram-nginx-config"
   service:
     port: 80

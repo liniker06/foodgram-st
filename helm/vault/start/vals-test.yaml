@@ -1,0 +1,3 @@
+db_user: ref+vault+kv2://secrets/db#username
+db_pass: ref+vault+kv2://secrets/db#password
+db_name: ref+vault+kv2://secrets/db#database

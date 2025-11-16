@@ -9,5 +9,5 @@ nginx:
   pullPolicy: IfNotPresent
   port: 80
   mediaPath: "/var/html/media"
-  mediaPVC: "media-pvc"
+  mediaPVC: "media-pvc-nginx"
   configMap: "nginx-config"
