@@ -27,7 +27,7 @@ spec:
       volumes:
         - name: media-files
           persistentVolumeClaim:
-            claimName: media-pvc
+            claimName: media-pvc-nginx
         - name: nginx-config
           configMap:
             name: nginx-config

@@ -20,9 +20,9 @@ env:
 
 secrets:
   name: db-secret
-  username: ref+vault://secret/data/foodgram/db#DB_USER
-  password: ref+vault://secret/data/foodgram/db#DB_PASSWORD
-  database: ref+vault://secret/data/foodgram/db#DB_NAME
+  username: ref+vault://secrets/foodgram/db#DB_USER
+  password: ref+vault://secrets/foodgram/db#DB_PASSWORD
+  database: ref+vault://secrets/foodgram/db#DB_NAME
 
 persistence:
   existingClaim: media-pvc
